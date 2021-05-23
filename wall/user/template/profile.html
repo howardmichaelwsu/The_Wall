@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile Page</title>
+</head>
+<body>
+	<div>
+		<h1>Welcome {{user.first_name}} {{user.last_name}}</h1>
+	</div>
+	<div>
+		{% for post in user.user_messages.all %}
+		<h6>{{post.message}}</h6>
+		{% endfor %}
+		{% for commentin user.user_comments.all %}
+		<h6>{{comment.comment}}</h6>
+		{% endfor %}
+	</div>
+	<div>
+		<h2>Edit user info</h2>
+		<form action="/edit/{{user.id}}" method=POST>
+			{% csrf_token %}
+			<label for="first_name">First Name</label>
+			<input type="text" name="first_name" value="{{user.first_name}}">
+			<label for="last_name">Last Name</label>
+			<input type="text" name="last_name" value="{{user.last_name}}">
+			<label for="email">Email</label>
+			<input type="email" name="email" value="={{uer.email}}">
+			<input type="submit" value="Submit changes">
+		</form>
+	</div>
+
+</body>
+</html>

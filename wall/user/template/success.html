@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div>
+        <a href="/logout">Logout of account</a>
+        <h1>Welcome to {{ request.session.user }} wall</h1>
+        <div id="post">
+            <h4>Write Post</h4>
+            <form action="/messages" method="POST">
+                {% csrf_token %}
+                <input type="text" name="messaging">
+                <input type="submit" name="post">
+            </form>
+        </div>
+    </div>
+    <div>
+        {% for post in wall_post %}
+            <p> {{ post.message }}</p>
+            <p> <a href="user_profile/{{ post.poster.id }}"> {{post.poster.first_name}} {{post.poster.last_name}}</a> </p>
+            <p>{{post.user_like.count}}</p>
+            <form action="/add_comment/{{post.id}}" method=POST>
+                {% csrf_token %}
+                <input type="text" name="comment">
+                <input type="submit" value="submit comment">
+            </form>
+            {% for comment in post.post_comments.all %}
+                <p>{{comment.comment}}</p>
+                <p>{{comment.poster.first_name}} {{comment.poster.last_name}}</p>
+                <a href="/delete/{{comment.id}}">Delete</a>
+            {% endfor %}
+        </div>
+        {% endfor %}
+    </div>
+</body>
+</html>
